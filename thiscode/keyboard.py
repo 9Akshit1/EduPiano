@@ -1,5 +1,5 @@
 from vedo import printc
-from thiscode.common import fpress, frelease, kpress, krelease, nameof
+from thiscode.common import nameof
 import thiscode.common as common
 import sys
 import numpy as np
