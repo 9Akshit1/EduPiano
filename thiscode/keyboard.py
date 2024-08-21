@@ -1,9 +1,4 @@
-try:
-    from vedo import Plotter, Assembly, printc
-    from vedo import Ellipsoid, Box, Cylinder, Text2D
-except:
-    pass
-#from thiscode import __version__
+from vedo import printc
 from thiscode.common import fpress, frelease, kpress, krelease, nameof
 import thiscode.common as common
 import sys
