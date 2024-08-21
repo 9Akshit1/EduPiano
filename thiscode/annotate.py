@@ -93,6 +93,8 @@ def runner(params):
         lbeam = int(lbeam)
     if quiet == '':
         quiet = False
+    else:
+        quiet = bool(quiet)
     if musescore == '':
         musescore = False
     else:
