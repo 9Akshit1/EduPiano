@@ -178,20 +178,17 @@ while running:
     draw_text("Run", font, BLACK, window, WINDOW_WIDTH / 2  - 60 + 26, 500 + 10)
 
     # Draw result part
-    draw_text("THANKS FOR USING EduPo!", big_font, BLACK, window, WINDOW_WIDTH / 2 - 300, 625)
-    draw_text("Note: Projection Piano in Development!", small_font, BLACK, window, WINDOW_WIDTH / 2 - 100, 680)
-    draw_text("You can press Esc to quit this application now! Bye!", small_font, BLACK, window, WINDOW_WIDTH / 2 - 300, 705)
     if show_result:
         draw_text(f"Download the annotated file by going to this application's folder to see a new .xml file called '{result_fn}' and download that.", small_font, BLACK, window, 50, 550)
         draw_text("To visualize annotated score with fingering type, right click on the file in the file explorer and select \"Open with\" and select MuseScore 4.", small_font, BLACK, window, 50, 575)
         if with_2D:
             draw_text("2D Keyboard Display will be loaded after this window closes.", small_font, BLACK, window, 50, 600)
-        draw_text("THANKS FOR USING EduPo!", big_font, BLACK, window, WINDOW_WIDTH / 2 - 100, 650)
-        draw_text("Note: Projection Piano in Development!", small_font, BLACK, window, 50, 710)
+        draw_text("THANKS FOR USING EduPo!", big_font, BLACK, window, WINDOW_WIDTH / 2 - 250, 625)
+        draw_text("Note: Projection Piano in Development!", small_font, BLACK, window, WINDOW_WIDTH / 2 - 140, 680)
         if with_2D:
-            draw_text("You can press Esc to quit this application now and see the 2D keyboard! Bye!", small_font, BLACK, window, 50, 740)
+            draw_text("You can press Esc to quit this application now and see the 2D keyboard! Bye!", small_font, BLACK, window, WINDOW_WIDTH / 2 - 250, 705)
         else: 
-            draw_text("You can press Esc to quit this application now! Bye!", small_font, BLACK, window, 50, 770)
+            draw_text("You can press Esc to quit this application now! Bye!", small_font, BLACK, window, WINDOW_WIDTH / 2 - 180, 705)
 
     pygame.display.flip()
     clock.tick(60)
