@@ -199,7 +199,7 @@ if with_2D:
     from thiscode.keyboard import VisualizeKeyboard
 
     if start_measure != 1:
-        print('Sorry, start_measure must be set to 1 when -v option is used. Exit.')
+        print('Sorry, start_measure must be set to 1 because 2D keyboard is used. Exit.')
         exit()
 
     kb = VisualizeKeyboard(songname=xmlfn)
