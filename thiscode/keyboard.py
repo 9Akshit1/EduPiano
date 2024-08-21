@@ -161,7 +161,7 @@ class VisualizeKeyboard:
         self.white_notes = pl.white_notes
         self.black_notes = pl.black_notes
 
-        self.normal_font = pygame.font.SysFont('assets/Terserah.ttf', 36)  
+        self.normal_font = pygame.font.Font('assets/Terserah.ttf', 36)  
         self.small_font = pygame.font.Font('assets/Terserah.ttf', 16)
         self.real_small_font = pygame.font.Font('assets/Terserah.ttf', 10)
 
