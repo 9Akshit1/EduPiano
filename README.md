@@ -1,3 +1,3 @@
 # EduPiano
 Installations & Dependencies:
-Please download latest version of music21, simpleaudio, numpy, and vedo library in python
+Please make sure to have/download the latest version of pygame, umpy, wave, music21, simpleaudio, and vedo library in python
