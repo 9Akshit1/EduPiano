@@ -3,7 +3,6 @@ import os
 import tkinter as tk
 from tkinter import filedialog
 import shutil
-import time  # For simulating function execution time
 from thiscode.annotate import runner
 
 # Initialize Pygame
@@ -54,32 +53,6 @@ parameters = [
 # Input fields
 input_fields = ['' for _ in parameters]
 active_field = None
-
-#called in annotate.py at the end of the runner function
-def finish_window(result_fn, load_kb):
-    print('here begin')
-    go = True
-    while go:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                print('quit auto')
-                go = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                        go = False
-        draw_text(f"Download the annotated file by going to this application's folder to see a new .xml file called '{result_fn}' and download that.", small_font, BLACK, window, 50, 550)
-        draw_text("To visualize annotated score with fingering type, right click on the file in the file explorer and select \"Open with\" and select MuseScore 4.", small_font, BLACK, window, 50, 575)
-        if load_kb:
-            draw_text("2D Keyboard Display will be loaded after this window closes.", small_font, BLACK, window, 50, 600)
-        draw_text("THANKS FOR USING EduPo!", big_font, BLACK, window, WINDOW_WIDTH / 2 - 100, 650)
-        draw_text("Note: Projection Piano in Development!", small_font, BLACK, window, 50, 710)
-        if load_kb:
-            draw_text("You can press Esc to quit this application now and see the 2D keyboard! Bye!", small_font, BLACK, window, 50, 740)
-        else: 
-            draw_text("You can press Esc to quit this application now! Bye!", small_font, BLACK, window, 50, 770)
-        pygame.display.flip()
-        clock.tick(60)
-    pygame.quit()
 
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
@@ -199,11 +172,11 @@ if with_2D:
     from thiscode.keyboard import VisualizeKeyboard
 
     if start_measure != 1:
-        print('Sorry, start_measure must be set to 1 because 2D keyboard is used. Exit.')
+        print('Sorry, start_measure must be set to 1 2D keyboard is used. Exit.')
         exit()
 
     kb = VisualizeKeyboard(songname=xmlfn)
-
+    
     if rh != []:
         kb.build_RH(rh)
     if lh != []:
