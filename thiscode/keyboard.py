@@ -16,7 +16,6 @@ except:
 
 import pygame
 import thiscode.piano_lists as pl
-from pygame import mixer
 import time
 
 #####################################################################
@@ -270,21 +269,17 @@ class VisualizeKeyboard:
 
         pause = False
         t=0.0
-        while True:
-            self.timer.tick(self.fps)
-            if pause:
-                if self.rightHand: self._moveHand( 1, t)
-                if self.leftHand:  self._moveHand(-1, t)
-                self.draw()
-                if t > 1000: break
-                t += self.dt
+        run = True
+        while run:
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    run = False
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
+                        run = False
                         pygame.quit()
                         sys.exit()
                     elif event.key == pygame.K_UP:
@@ -307,6 +302,18 @@ class VisualizeKeyboard:
                         print('t = ', t)                     # absolute time flows
                     elif event.key == pygame.K_SPACE:
                         pause = not pause
+            
+            self.timer.tick(self.fps)
+            if pause:
+                #print(t)   #testing purposes
+                if self.rightHand: self._moveHand( 1, t)
+                if self.leftHand:  self._moveHand(-1, t)
+                self.draw()
+                if t > 1000: 
+                    run = False
+                    break
+                t += self.dt
+            
 
         if self.verbose: printc('End of note sequence reached.')
 
@@ -331,7 +338,7 @@ class VisualizeKeyboard:
             engagedfingers = self.engagedfingersL
             H              = self.leftHand
             pygH            = self.pygLH
-
+        
         for i, n in enumerate(H.noteseq):#####################
             start, stop, f = n.time, n.time+n.duration, n.fingering
             if isinstance(f, str): continue
@@ -360,10 +367,9 @@ class VisualizeKeyboard:
                 
                 pygH[f+1][1] = pygame.draw.rect(self.screen, colorF, pygH[f+1][1])  #finger up, we use f+1 becasue there are 2 things before the fingers
                 self.KB[name][0] = pygame.draw.rect(self.screen, colorK, self.KB[name][0])  #key released 
-                pygame.display.update()
+                #pygame.display.update()
                 pygH[f+1][2] = colorF
                 self.KB[name][1] = colorK
-
         self.chord_notes = [[], 0] #name(s), duration
         self.chord_is_on = False
         for i, n in enumerate(H.noteseq):####################
@@ -377,7 +383,7 @@ class VisualizeKeyboard:
                 engagedkeys[i]    = True
                 engagedfingers[f] = True
                 name = nameof(n)
-       
+                
                 if t > self.t0:
                     self.t0 = t
                 
@@ -410,6 +416,7 @@ class VisualizeKeyboard:
                 # Assuming the rotation is based on the difference in x-values. 
                 # #we use f+1 becasue there are 2 things before the fingers
                 # Angle in radians, then convert to degrees
+                #rotate_angle = np.degrees(np.arctan2((pygH[f+1][1].x + self.finger_width) - self.KB[name][0].centerx, (pygH[f+1][1].y + pygH[f+1][1].height) - self.KB[name][0].centery))     #prob the correect calculation, a little goofy but wahtev
                 rotate_angle = np.degrees(np.arctan2(self.KB[name][0].x - pygH[f+1][1].x, self.KB[name][0].y - pygH[f+1][1].y))  
                 # If the absolute value of the angle is within the threshold, rotate the rect
                 if abs(rotate_angle) <= 30:       #30 is the max amoutn of dgerees that the finger can rotate
@@ -420,6 +427,7 @@ class VisualizeKeyboard:
                     rotated_rect = rotated_surface.get_rect(center=pygH[f+1][1].center)   
                     pygH[f+1][3] = ['type_surface', rotated_surface, rotated_rect, rotate_angle, rect_surface]
                     self.screen.blit(pygH[f+1][3][1], pygH[f+1][3][2].topleft)
+                    pygame.display.update()
                 else:
                     # Just move all fingers by the movement for the finger to key
                     delta_x_move =  self.KB[name][0].x - pygH[f+1][1].x
@@ -433,7 +441,7 @@ class VisualizeKeyboard:
                     pygH[f+1][1] = pygame.draw.rect(self.screen, c1, pygH[f+1][1])  #finger down
 
                 self.KB[name][0] = pygame.draw.rect(self.screen, c2, self.KB[name][0])  #key pressed
-                pygame.display.update()
+                #pygame.display.update()
                 pygH[f+1][2] = c1
                 self.KB[name][1] = c2
 
@@ -450,10 +458,6 @@ class VisualizeKeyboard:
                     if not self.chord_is_on:    #so when no chord
                         playNote([name], n.duration / self.speedfactor)
                         #soundof([n], duration = n.duration / self.speedfactor, wait=True)   #another method of playing notes
-                    else:
-                        pass
-                else:
-                    pass
     
     def draw(self):
         self.screen.fill('gray')
@@ -477,8 +481,7 @@ class VisualizeKeyboard:
                 pygame.draw.rect(self.screen, self.KB[k_name][1], self.KB[k_name][0], 0, 2)
                 key_label = self.real_small_font.render(k_name, True, 'white')   #uses sharps
                 self.screen.blit(key_label, (25 + (i * self.key_width) + (skip_count * self.key_width), self.screen_height - 120))
-
-            else:      #next black keys
+            else:      #next black keys     
                 skip_track += 1
                 if last_skip == 2 and skip_track == 3:
                     last_skip = 3
@@ -491,7 +494,6 @@ class VisualizeKeyboard:
                 pygame.draw.rect(self.screen, self.KB[k_name][1], self.KB[k_name][0], 0, 2)
                 key_label = self.real_small_font.render(k_name, True, 'white')   #uses sharps
                 self.screen.blit(key_label, (25 + (i * self.key_width) + (skip_count * self.key_width), self.screen_height - 120))
-
         if self.pygRH:
             for component in self.pygRH:
                 if component[0] == 'rect':    #fingers
@@ -520,12 +522,3 @@ class VisualizeKeyboard:
                     self.screen.blit(key_label, (component[1].centerx, component[1].centery - 10))
         pygame.display.flip()
         
-
-
-############################ test
-if __name__ == "__main__":
-    vk = VisualizeKeyboard('Night Dancer')
-
-
-
-
