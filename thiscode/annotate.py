@@ -275,13 +275,13 @@ in the file explorer and select "Open with" and select MuseScore 4.''')
                 print('''To visualize annotated score with fingering type, right click on the file 
 in the file explorer and select "Open with" and select MuseScore 4.''')
 
-    if not args.left_only:
+    if args.left_only == False and args.right_only == True:
         return args.outputfile, args.with_2D, args.start_measure, xmlfn, rh, [], args.sound_off, args.speed_2D
-    if not args.right_only:
+    if args.left_only == True and args.right_only == False:
         return args.outputfile, args.with_2D, args.start_measure, xmlfn, [], lh, args.sound_off, args.speed_2D
     else:     #msut be both
         return args.outputfile, args.with_2D, args.start_measure, xmlfn, rh, lh, args.sound_off, args.speed_2D
 
 
 if __name__ == '__main__':
-    runner(['scores/Night Dancer.xml', "output_annotated.xml", 800, '', '', '', '', '', True, '', True, 3.0, '', '', '', ''])
+    runner(['Night Dancer.xml', "output_annotated.xml", 800, '', '', '', '', '', True, '', True, 3.0, '', '', '', ''])
