@@ -250,7 +250,7 @@ class VisualizeKeyboard:
             if side == 1:
                 start, stop, f = n.time, n.time+n.duration, n.fingering
             else:
-                start, stop, f = n.time, n.time+n.duration, 5-n.fingering
+                start, stop, f = n.time, n.time+n.duration, 6-n.fingering
             if isinstance(f, str): continue
             if (f) and (stop <= t <= stop+self.dt) and (engagedkeys[i]): #release key: True, ___, True
                 stop_search = True
@@ -284,7 +284,7 @@ class VisualizeKeyboard:
             if side == 1:
                 start, stop, f = n.time, n.time+n.duration, n.fingering
             else:
-                start, stop, f = n.time, n.time+n.duration, 5-n.fingering
+                start, stop, f = n.time, n.time+n.duration, 6-n.fingering
             if isinstance(f, str):
                 print('Warning: cannot understand lyrics:',f, 'skip note',i)
                 continue
@@ -427,3 +427,5 @@ class VisualizeKeyboard:
         pygame.display.flip()
         if self.playsounds and self.play_notes[0]!=[] and self.play_notes[1]!=[]:
             playHands(self.play_notes[0], self.play_notes[1])
+        else:
+            time.sleep(max(self.play_notes[1]))    #wait for the longest note to finish, which means all the notes finish
