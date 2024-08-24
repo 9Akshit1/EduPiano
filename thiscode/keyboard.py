@@ -127,6 +127,7 @@ class VisualizeKeyboard:
 
     #######################################################Build Keyboard
     def build_keyboard(self):
+        self.screen.fill('gray')
         text_surface = self.normal_font.render(f'Playing {self.songname}', True, (0, 0, 0))
         self.screen.blit(text_surface, (self.screen_width / 2, 50))
         text_surface = self.normal_font.render('Press: Esc to quit, Space to play/pause, Left/Right to go forward/backward, Up/Down to change speed, S to on/off sound, and R to restart', True, (0, 0, 0))
@@ -189,10 +190,10 @@ class VisualizeKeyboard:
                         pygame.quit()
                         sys.exit()
                     elif event.key == pygame.K_UP:
-                        self.speedfactor = self.speedfactor * 2       #shorten notes
+                        self.speedfactor += 0.5       #shorten notes
                         print('Speedfactor = ', self.speedfactor)
                     elif event.key == pygame.K_DOWN: 
-                        self.speedfactor = self.speedfactor / 2       #lengtehn notes 
+                        self.speedfactor -= 0.5       #lengtehn notes 
                         print('Speedfactor = ', self.speedfactor)
                     elif event.key == pygame.K_s:
                         self.playsounds = not self.playsounds
@@ -200,6 +201,11 @@ class VisualizeKeyboard:
                     elif event.key == pygame.K_r:
                         t = 0.0
                         print('t = ', t)
+                        self.build_keyboard()
+                        if self.rightHand:
+                            self.build_RH(self.rightHand)
+                        if self.leftHand:
+                            self.build_LH(self.leftHand)
                     elif event.key == pygame.K_RIGHT:
                         t -= 1
                         print('t = ', t)
@@ -425,7 +431,8 @@ class VisualizeKeyboard:
                     self.screen.blit(key_label, (component[1].centerx - 20, component[1].centery - 30))
                 i += 1
         pygame.display.flip()
-        if self.playsounds and self.play_notes[0]!=[] and self.play_notes[1]!=[]:
-            playHands(self.play_notes[0], self.play_notes[1])
-        else:
-            time.sleep(max(self.play_notes[1]))    #wait for the longest note to finish, which means all the notes finish
+        if self.play_notes[1] != []:
+            if self.playsounds:
+                playHands(self.play_notes[0], self.play_notes[1])
+            else:
+                time.sleep(max(self.play_notes[1]))    #wait for the longest note to finish, which means all the notes finish
