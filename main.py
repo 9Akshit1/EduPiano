@@ -207,7 +207,7 @@ while running:
         draw_rounded_rect(surface, result_section, (255, 255, 255), 10)
         draw_text(f"Download the annotated file: '{result_fn}  To visualize: Open with MuseScore 4'", larger_body_font, TEXT_COLOR, surface, 60, 890)
         if with_2D:
-            draw_text("2D Keyboard Display will load after closing", larger_body_font, TEXT_COLOR, surface, 60, 920)
+            draw_text("2D Keyboard Display will load after closing this window (press esc)", larger_body_font, TEXT_COLOR, surface, 60, 920)
         draw_text("THANKS FOR USING EduPo!", subheading_font, PRIMARY_COLOR, surface, WINDOW_WIDTH // 2 - 200, 970)
         draw_text("Note: Projection Piano in Development!", larger_body_font, SECONDARY_COLOR, surface, WINDOW_WIDTH // 2 - 160, 1005)
 
