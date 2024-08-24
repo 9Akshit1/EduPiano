@@ -17,12 +17,12 @@ def annotate_fingers_xml(sf, hand, args, hand_type, is_right=True):
                 if hand_type == 'R':
                     p.addLyric(n.fingering)
                 else:
-                    p.addLyric(5 - n.fingering)
+                    p.addLyric(6 - n.fingering)
             else:
                 if hand_type == 'R':
                     p.articulations.append(Fingering(n.fingering))
                 else:
-                    p.articulations.append(Fingering(5 - n.fingering))
+                    p.articulations.append(Fingering(6 - n.fingering))
             i += 1
         elif p.isChord:
             for j, cn in enumerate(p.pitches):
@@ -34,12 +34,12 @@ def annotate_fingers_xml(sf, hand, args, hand_type, is_right=True):
                     if hand_type == 'R':
                         p.addLyric(cn.fingering, nl)
                     else:
-                        p.addLyric(5 - cn.fingering, nl)
+                        p.addLyric(6 - cn.fingering, nl)
                 else:
                     if hand_type == 'R':
                         p.articulations.append(Fingering(n.fingering))
                     else:
-                        p.articulations.append(Fingering(5 - n.fingering))
+                        p.articulations.append(Fingering(6 - n.fingering))
                 i += 1
 
     return sf
