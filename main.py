@@ -53,7 +53,7 @@ parameters = [
     ("visualize_in_musescore (bool)", "False"),
     ("write_below_beam (bool)", "False"),
     ("with_2D_keyboard (bool)", "False"),
-    ("speed_of_2D_keyboard (int)", "0"),
+    ("speed_of_2D_keyboard (int)", "1.0"),
     ("finger_rotation (bool)", "True"),
     ("sound_off (bool)", "False"),
     ("left_hand_only (bool)", "False"),
