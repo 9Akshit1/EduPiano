@@ -4,7 +4,7 @@ from music21.articulations import Fingering
 from thiscode.common import reader, PIG_to_Stream
 from thiscode.hand import Hand
 
-def annotate_fingers_xml(sf, hand, args, is_right=True):
+def annotate_fingers_xml(sf, hand, args, hand_type, is_right=True):
     part = sf.parts[args.rbeam if is_right else args.lbeam]
     i = 0
     
@@ -14,9 +14,15 @@ def annotate_fingers_xml(sf, hand, args, is_right=True):
         if p.isNote:
             n = hand.noteseq[i]
             if hand.lyrics:
-                p.addLyric(n.fingering)
+                if hand_type == 'R':
+                    p.addLyric(n.fingering)
+                else:
+                    p.addLyric(5 - n.fingering)
             else:
-                p.articulations.append(Fingering(n.fingering))
+                if hand_type == 'R':
+                    p.articulations.append(Fingering(n.fingering))
+                else:
+                    p.articulations.append(Fingering(5 - n.fingering))
             i += 1
         elif p.isChord:
             for j, cn in enumerate(p.pitches):
@@ -25,9 +31,15 @@ def annotate_fingers_xml(sf, hand, args, is_right=True):
                 n = hand.noteseq[i]
                 if hand.lyrics:
                     nl = len(cn.chord21.pitches) - cn.chordnr
-                    p.addLyric(cn.fingering, nl)
+                    if hand_type == 'R':
+                        p.addLyric(cn.fingering, nl)
+                    else:
+                        p.addLyric(5 - cn.fingering, nl)
                 else:
-                    p.articulations.append(Fingering(n.fingering))
+                    if hand_type == 'R':
+                        p.articulations.append(Fingering(n.fingering))
+                    else:
+                        p.articulations.append(Fingering(5 - n.fingering))
                 i += 1
 
     return sf
@@ -61,10 +73,11 @@ def runner(params):
     below_beam = params[9]
     with_2D = params[10]
     speed_2D = params[11]
-    sound_off = params[12]
-    left_only = params[13]
-    right_only = params[14]
-    hand_size = params[15]
+    f_rot = params[12]
+    sound_off = params[13]
+    left_only = params[14]
+    right_only = params[15]
+    hand_size = params[16]
     
     if filename == '':
         print("Please input/upload the file you want annotated")
@@ -114,6 +127,10 @@ def runner(params):
         speed_2D = 1
     else:
         speed_2D = float(speed_2D)
+    if f_rot == '':
+        f_rot = False
+    else:
+        f_rot = bool(f_rot)
     if sound_off == '':
         sound_off = False
     else:
@@ -144,6 +161,7 @@ def runner(params):
     args.below_beam = below_beam
     args.with_2D = with_2D
     args.speed_2D = speed_2D
+    args.f_rot = f_rot
     args.sound_off = sound_off
     args.left_only = left_only
     args.right_only = right_only
@@ -257,10 +275,10 @@ def runner(params):
 
             # Annotate fingers in XML
             if not args.left_only:
-                sf = annotate_fingers_xml(sf, rh, args, is_right=True)
+                sf = annotate_fingers_xml(sf, rh, args, 'R', is_right=True)
 
             if not args.right_only:
-                sf = annotate_fingers_xml(sf, lh, args, is_right=False)
+                sf = annotate_fingers_xml(sf, lh, args, 'L', is_right=False)
             sf.write('musicxml', fp=args.outputfile)
 
             if args.musescore:  # -m option
@@ -273,14 +291,14 @@ def runner(params):
 in the file explorer and select "Open with" and select MuseScore 4.''')
             else:
                 print('''To visualize annotated score with fingering type, right click on the file 
-in the file explorer and select "Open with" and select MuseScore 4.''')
+in the file explorer and select "Open with" and select MuseScore 4.''') 
 
     if args.left_only == False and args.right_only == True:
-        return args.outputfile, args.with_2D, args.start_measure, xmlfn, rh, [], args.sound_off, args.speed_2D
+        return args.outputfile, args.with_2D, args.start_measure, xmlfn, rh, [], args.sound_off, args.speed_2D, args.f_rot
     if args.left_only == True and args.right_only == False:
-        return args.outputfile, args.with_2D, args.start_measure, xmlfn, [], lh, args.sound_off, args.speed_2D
+        return args.outputfile, args.with_2D, args.start_measure, xmlfn, [], lh, args.sound_off, args.speed_2D, args.f_rot
     else:     #msut be both
-        return args.outputfile, args.with_2D, args.start_measure, xmlfn, rh, lh, args.sound_off, args.speed_2D
+        return args.outputfile, args.with_2D, args.start_measure, xmlfn, rh, lh, args.sound_off, args.speed_2D, args.f_rot
 
 
 if __name__ == '__main__':
